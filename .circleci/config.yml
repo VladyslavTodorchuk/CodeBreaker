@@ -30,12 +30,12 @@ commands:
       - run:
           name: rubocop
           command: bundle exec rubocop
-  run_fasterer:
-    description: command to start fasterer
-    steps:
-      - run:
-          name: fasterer
-          command: bundle exec fasterer
+ # run_fasterer:
+#  description: command to start fasterer
+ #   steps:
+  #    - run:
+   #       name: fasterer
+    #      command: bundle exec fasterer
 
 jobs:
   lintering:
@@ -43,7 +43,7 @@ jobs:
     steps:
       - defaults
       - run_rubocop
-      - run_fasterer
+     # - run_fasterer
 
 workflows:
   version: 2.1
