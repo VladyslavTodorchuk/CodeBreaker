@@ -2,3 +2,5 @@ require:
   - rubocop-performance
   - rubocop-rspec
 
+AllCops:
+  SuggestExtensions: false
