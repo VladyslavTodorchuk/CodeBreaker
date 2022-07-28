@@ -1,14 +1,7 @@
-/.bundle/
-/.yardoc
-/_yardoc/
-/coverage/
-/doc/
-/pkg/
-/spec/reports/
-/tmp/
+
 .gitignore
 .DS_Store
 .env
-.idea
+.idea/*
 log/*
 Gemfile.lock
