@@ -1,7 +1,0 @@
-
-.gitignore
-.DS_Store
-.env
-.idea/*
-log/*
-Gemfile.lock
