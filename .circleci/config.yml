@@ -2,14 +2,14 @@ version: 2.1
 
 executors:
   default:
-    working_directory: ~/repo
+    working_directory: ~/codebreaker
     description: The official CircleCI Ruby Docker image
     docker:
       - image: cimg/ruby:3.1.2
 
 cashes:
-  - &bundle_cache_full v2-repo-{{ checksum "Gemfile.lock" }}
-  - &bundle_cache v2-repo
+  - &bundle_cache_full v2-codebreaker-{{ checksum "Gemfile.lock" }}
+  - &bundle_cache v2-codebreaker
 
 commands:
   defaults:
@@ -24,19 +24,26 @@ commands:
           key: *bundle_cache_full
           paths:
             - vendor/bundle
-  run_linters:
-    description: command to start linters
+  run_rubocop:
+    description: command to start rubocop
     steps:
       - run:
           name: rubocop
           command: bundle exec rubocop
+  run_fasterer:
+    description: command to start fasterer
+    steps:
+      - run:
+          name: fasterer
+          command: bundle exec fasterer
 
 jobs:
   lintering:
     executor: default
     steps:
       - defaults
-      - run_linters
+      - run_rubocop
+      - run_fasterer
 
 workflows:
   version: 2.1
