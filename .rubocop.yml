@@ -1,8 +1,18 @@
 require:
   - rubocop-performance
   - rubocop-rspec
+
 Style/Documentation:
   Enabled: false
+
+RSpec/ExampleLength:
+  Max: 6
+
+RSpec/FilePath:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Max: 4
 
 AllCops:
   SuggestExtensions: false

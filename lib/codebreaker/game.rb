@@ -14,14 +14,14 @@ module CodeBreaker
     end
 
     def check_user_input(secret_code, user_code)
-      result_string = ""
+      result_string = ''
       user_code.each do |digit|
-        if secret_code.include?(digit)
-          result_string << '+' if user_code.find_index(digit) == secret_code.find_index(digit)
-          result_string << '-' unless user_code.find_index(digit) == secret_code.find_index(digit)
-          user_code[user_code.find_index(digit)] = 0
-          secret_code[secret_code.find_index(digit)] = 0
-        end
+        next unless secret_code.include?(digit)
+
+        result_string << '+' if user_code.find_index(digit) == secret_code.find_index(digit)
+        result_string << '-' unless user_code.find_index(digit) == secret_code.find_index(digit)
+        user_code[user_code.find_index(digit)] = 0
+        secret_code[secret_code.find_index(digit)] = 0
       end
       @used_attempts += 1
       result_string.chars.sort.join
@@ -35,7 +35,7 @@ module CodeBreaker
 
     def initialize
       @code = []
-      4.times { @code << rand(1..6)}
+      4.times { @code << rand(1..6) }
     end
   end
 end
