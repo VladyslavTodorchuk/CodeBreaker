@@ -1,3 +1,4 @@
+# frozen_string_literal: false
 
 module CodeBreaker
   class Game
@@ -8,30 +9,33 @@ module CodeBreaker
       @difficulty = params[:difficulty]
       @total_attempts = params[:total_attempts]
       @used_attempts = params[:used_attempts]
-      @total_hints = params[:total_attempts]
+      @total_hints = params[:total_hints]
       @used_hints = params[:used_hints]
     end
 
-    def check_user_input(code_maker_code, user_code)
-
+    def check_user_input(secret_code, user_code)
+      result_string = ""
+      user_code.each do |digit|
+        if secret_code.include?(digit)
+          result_string << '+' if user_code.find_index(digit) == secret_code.find_index(digit)
+          result_string << '-' unless user_code.find_index(digit) == secret_code.find_index(digit)
+          user_code[user_code.find_index(digit)] = 0
+          secret_code[secret_code.find_index(digit)] = 0
+        end
+      end
+      @used_attempts += 1
+      result_string.chars.sort.join
     end
 
-    def get_hint
-
-    end
-
+    def receive_hint; end
   end
 
   class CodeMaker
     attr_reader :code
 
     def initialize
-      mult = 1
-      4.times do
-        @code += (1 + rand(6)) * mult
-        mult *= 10
-      end
+      @code = []
+      4.times { @code << rand(1..6)}
     end
-
   end
 end

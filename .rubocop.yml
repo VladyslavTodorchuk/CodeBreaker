@@ -1,6 +1,8 @@
 require:
   - rubocop-performance
   - rubocop-rspec
+Style/Documentation:
+  Enabled: false
 
 AllCops:
   SuggestExtensions: false
