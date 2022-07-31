@@ -30,6 +30,12 @@ commands:
       - run:
           name: rubocop
           command: bundle exec rubocop
+  rspec_run:
+    description: command to start specs
+    steps:
+      - run:
+          name: specs
+          command: bundle exec rspec
  # run_fasterer:
 #  description: command to start fasterer
  #   steps:
