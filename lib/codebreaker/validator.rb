@@ -3,7 +3,7 @@ module CodeBreaker
   class Validator
 
     def self.validates_name?(name)
-      return false if name.nil? && !name.instance_of?(String)
+      return false if name.nil? || !name.instance_of?(String)
       name.length >= 3 && name.length <= 20 ? true : false
     end
 
