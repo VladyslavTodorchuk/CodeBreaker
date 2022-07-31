@@ -1,41 +1,44 @@
 # frozen_string_literal: false
+require_relative 'validator'
 
 module CodeBreaker
   class Game
-    attr_reader :name, :difficulty, :total_attempts, :used_attempts, :total_hints, :used_hints
+    attr_reader :name, :difficulty, :secret_code, :difficulty_hash
 
     def initialize(params)
       @name = params[:name]
-      @difficulty = params[:difficulty]
-      @total_attempts = params[:total_attempts]
-      @used_attempts = params[:used_attempts]
-      @total_hints = params[:total_hints]
-      @used_hints = params[:used_hints]
+      @difficulty = params[:difficulty].downcase
+      @used_attempts = 0
+      @used_hints = 0
+      @secret_code = params[:secret_code]
+      @difficulty_hash = { easy: { attempts: 15, hints: 2 },
+                           medium: { attempts: 10, hints: 1 },
+                           hell: { attempts: 5, hints: 1 } }
     end
 
-    def check_user_input(secret_code, user_code)
+    def check_user_input(user_code)
+      return 'No attempts left' if @used_attempts == @difficulty_hash[@difficulty.to_sym][:attempts]
+      return '' if user_code.nil?
+
+      user_code = user_code.to_s.chars.map(&:to_i)
       result_string = ''
       user_code.each do |digit|
-        next unless secret_code.include?(digit)
+        secret_copy = @secret_code.to_s.chars.map(&:to_i)
+        next unless secret_copy.include?(digit)
 
-        result_string << '+' if user_code.find_index(digit) == secret_code.find_index(digit)
-        result_string << '-' unless user_code.find_index(digit) == secret_code.find_index(digit)
-        user_code[user_code.find_index(digit)] = 0
-        secret_code[secret_code.find_index(digit)] = 0
+        result_string << (user_code.find_index(digit) == secret_copy.find_index(digit) ? '+' : '-')
+        secret_copy[secret_copy.find_index(digit)] = 0
       end
       @used_attempts += 1
       result_string.chars.sort.join
     end
 
-    def receive_hint; end
-  end
+    def receive_hint
+      return 'No hints left' if @used_hints == @difficulty_hash[@difficulty.to_sym][:hints]
 
-  class CodeMaker
-    attr_reader :code
-
-    def initialize
-      @code = []
-      4.times { @code << rand(1..6) }
+      @used_hints += 1
+      rand_position = rand(0..3)
+      @secret_code.to_s.chars[rand_position]
     end
   end
 end

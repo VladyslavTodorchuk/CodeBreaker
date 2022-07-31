@@ -1,18 +1,22 @@
-require:
-  - rubocop-performance
-  - rubocop-rspec
+require: rubocop-rspec
 
-Style/Documentation:
+Style/FrozenStringLiteralComment:
   Enabled: false
 
-RSpec/ExampleLength:
-  Max: 6
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+  SupportedStyles:
+    - single_quotes
+    - double_quotes
 
-RSpec/FilePath:
+Style/ParallelAssignment:
   Enabled: false
 
-RSpec/MultipleExpectations:
-  Max: 4
+Metrics/ClassLength:
+  Max: 200
 
-AllCops:
-  SuggestExtensions: false
+Metrics/LineLength:
+  Max: 120
+
+Documentation:
+  Enabled: false
