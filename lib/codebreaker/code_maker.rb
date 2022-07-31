@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module CodeBreaker
   class CodeMaker
     def self.generate_code

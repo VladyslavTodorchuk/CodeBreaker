@@ -3,6 +3,9 @@ require: rubocop-rspec
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+AllCops:
+  SuggestExtensions: false
+
 Style/StringLiterals:
   EnforcedStyle: single_quotes
   SupportedStyles:

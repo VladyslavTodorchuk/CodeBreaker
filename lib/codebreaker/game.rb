@@ -1,4 +1,3 @@
-# frozen_string_literal: false
 require_relative 'validator'
 
 module CodeBreaker
@@ -16,21 +15,24 @@ module CodeBreaker
                            hell: { attempts: 5, hints: 1 } }
     end
 
-    def check_user_input(user_code)
+    def guess(user_code)
       return 'No attempts left' if @used_attempts == @difficulty_hash[@difficulty.to_sym][:attempts]
       return '' if user_code.nil?
 
-      user_code = user_code.to_s.chars.map(&:to_i)
+      user_code, secret_copy = code_mapper(user_code, @secret_code)
+      result_string = get_result_from_input(user_code, secret_copy)
+      @used_attempts += 1
+      result_string.chars.sort.join
+    end
+
+    def get_result_from_input(user_code, secret_copy)
       result_string = ''
       user_code.each do |digit|
-        secret_copy = @secret_code.to_s.chars.map(&:to_i)
         next unless secret_copy.include?(digit)
 
         result_string << (user_code.find_index(digit) == secret_copy.find_index(digit) ? '+' : '-')
         secret_copy[secret_copy.find_index(digit)] = 0
       end
-      @used_attempts += 1
-      result_string.chars.sort.join
     end
 
     def receive_hint
@@ -39,6 +41,12 @@ module CodeBreaker
       @used_hints += 1
       rand_position = rand(0..3)
       @secret_code.to_s.chars[rand_position]
+    end
+
+    private
+
+    def code_mapper(user_code, secret_code)
+      [user_code.to_s.chars.map(&:to_i), secret_code]
     end
   end
 end
