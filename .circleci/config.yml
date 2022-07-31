@@ -30,7 +30,7 @@ commands:
       - run:
           name: rubocop
           command: bundle exec rubocop
-  rspec_run:
+  run_rspec:
     description: command to start specs
     steps:
       - run:
@@ -49,7 +49,7 @@ jobs:
     steps:
       - defaults
       - run_rubocop
-     # - run_fasterer
+      - run_rspec
 
 workflows:
   version: 2.1
