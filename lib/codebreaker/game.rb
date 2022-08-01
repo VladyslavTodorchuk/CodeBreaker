@@ -24,9 +24,8 @@ module CodeBreaker
       return '' if user_code.nil?
 
       CodeBreaker::Validator.validates_input? user_code
-      user_code = user_code.to_s.chars.map(&:to_i)
-      secret_copy = @secret_code.to_s.chars.map(&:to_i)
-      result_string = get_result_from_input(user_code, secret_copy)
+      codes = code_to_array(user_code, @secret_code)
+      result_string = get_result_from_input(codes[:input], codes[:secret])
       @used_attempts += 1
       result_string.chars.sort.join
     end
@@ -51,6 +50,12 @@ module CodeBreaker
         secret_copy[secret_copy.find_index(digit)] = 0
       end
       result_string
+    end
+
+    def code_to_array(input_code, secret_code)
+      input_code = input_code.to_s.chars.map(&:to_i)
+      secret_code = secret_code.to_s.chars.map(&:to_i)
+      { input: input_code, secret: secret_code }
     end
   end
 end

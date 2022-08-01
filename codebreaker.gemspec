@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary = 'CodeBreaker game.'
   spec.description = 'Simple game where you should break a code.'
   spec.homepage = 'https://github.com/VladyslavTodorchuk/Codebreakera_Gem'
-  spec.required_ruby_version = '>= 2.6.0'
+  spec.required_ruby_version = '>= 3.1.2'
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/VladyslavTodorchuk/Codebreakera_Gem'
