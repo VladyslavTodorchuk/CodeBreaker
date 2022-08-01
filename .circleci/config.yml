@@ -37,7 +37,7 @@ commands:
           name: specs
           command: bundle exec rspec
   run_fasterer:
-  description: command to start fasterer
+    description: command to start fasterer
     steps:
       - run:
           name: fasterer
