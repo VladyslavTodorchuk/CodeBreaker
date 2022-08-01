@@ -51,6 +51,7 @@ jobs:
       - run_rubocop
       - run_fasterer
   rspec:
+    executor: default
     steps:
       - run_rspec
 
