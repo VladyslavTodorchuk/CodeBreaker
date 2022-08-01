@@ -1,4 +1,3 @@
-require '././lib/codebreaker/errors/validator_error'
 
 RSpec.describe CodeBreaker::Validator do
   describe '#validates_name?' do
