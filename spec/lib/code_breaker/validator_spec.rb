@@ -1,45 +1,47 @@
+require '././lib/codebreaker/errors/validator_error'
+
 RSpec.describe CodeBreaker::Validator do
   describe '#validates_name?' do
-    example 'validates name' do
+    it 'validates name' do
       expect(described_class.validates_name?('Vladyslav')).to eq(true)
     end
 
-    example 'no validates name to short' do
-      expect(described_class.validates_name?('Vl')).to eq(false)
+    it 'no validates name to short' do
+      expect { described_class.validates_name?('Vl') }.to raise_error(CodeBreaker::ValidatorError)
     end
 
-    example 'bo validaes naem to long' do
-      expect(described_class.validates_name?('VladVladVladVladVladVlad')).to eq(false)
+    it 'bo validaes naem to long' do
+      expect { described_class.validates_name?('VladVladVladVladVladVlad') }.to raise_error(CodeBreaker::ValidatorError)
     end
 
-    example 'nil check' do
-      expect(described_class.validates_name?(nil)).to eq(false)
+    it 'nil check' do
+      expect { described_class.validates_name?(nil) }.to raise_error(CodeBreaker::ValidatorError)
     end
 
-    example 'no instance of String' do
-      expect(described_class.validates_name?(1234)).to eq(false)
+    it 'no instance of String' do
+      expect { described_class.validates_name?(1234) }.to raise_error(CodeBreaker::ValidatorError)
     end
   end
 
   describe '#validates_input?' do
-    example 'validates inputs' do
+    it 'validates inputs' do
       expect(described_class.validates_input?(1234)).to eq(true)
     end
 
-    example 'digits not from 1 to 6' do
-      expect(described_class.validates_input?(4578)).to eq(false)
+    it 'digits not from 1 to 6' do
+      expect { described_class.validates_input?(4578) }.to raise_error(CodeBreaker::ValidatorError)
     end
 
-    example 'input length is more then 4' do
-      expect(described_class.validates_input?(12_345)).to eq(false)
+    it 'input length is more then 4' do
+      expect { described_class.validates_input?(12_345) }.to raise_error(CodeBreaker::ValidatorError)
     end
 
-    example 'nil check' do
-      expect(described_class.validates_input?(nil)).to eq(false)
+    it 'nil check' do
+      expect { described_class.validates_input?(nil) }.to raise_error(CodeBreaker::ValidatorError)
     end
 
-    example 'no instance of Integer' do
-      expect(described_class.validates_input?(' ')).to eq(false)
+    it 'no instance of Integer' do
+      expect { described_class.validates_input?(' ') }.to raise_error(CodeBreaker::ValidatorError)
     end
   end
 end

@@ -36,12 +36,12 @@ commands:
       - run:
           name: specs
           command: bundle exec rspec
- # run_fasterer:
-#  description: command to start fasterer
- #   steps:
-  #    - run:
-   #       name: fasterer
-    #      command: bundle exec fasterer
+  run_fasterer:
+  description: command to start fasterer
+    steps:
+      - run:
+          name: fasterer
+          command: bundle exec fasterer
 
 jobs:
   lintering:
@@ -49,6 +49,11 @@ jobs:
     steps:
       - defaults
       - run_rubocop
+      - run_fasterer
+  rpsec:
+    executor: default
+    steps:
+      - dafaults
       - run_rspec
 
 workflows:
@@ -56,3 +61,4 @@ workflows:
   build:
     jobs:
       - lintering
+      - rpsec

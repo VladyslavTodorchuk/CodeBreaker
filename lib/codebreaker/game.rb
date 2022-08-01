@@ -2,14 +2,16 @@ require_relative 'validator'
 
 module CodeBreaker
   class Game
-    attr_reader :name, :difficulty, :secret_code, :difficulty_hash
+    attr_reader :name, :difficulty, :secret_code, :difficulty_hash, :used_attempts, :used_hints, :hints
 
     def initialize(params)
+      CodeBreaker::Validator.validates_name? params[:name]
       @name = params[:name]
       @difficulty = params[:difficulty].downcase
       @used_attempts = 0
       @used_hints = 0
       @secret_code = params[:secret_code]
+      @hints = 0
       @difficulty_hash = { easy: { attempts: 15, hints: 2 },
                            medium: { attempts: 10, hints: 1 },
                            hell: { attempts: 5, hints: 1 } }
@@ -19,12 +21,24 @@ module CodeBreaker
       return 'No attempts left' if @used_attempts == @difficulty_hash[@difficulty.to_sym][:attempts]
       return '' if user_code.nil?
 
+      CodeBreaker::Validator.validates_input? user_code
       user_code = user_code.to_s.chars.map(&:to_i)
       secret_copy = @secret_code.to_s.chars.map(&:to_i)
       result_string = get_result_from_input(user_code, secret_copy)
       @used_attempts += 1
       result_string.chars.sort.join
     end
+
+    def receive_hint
+      return 'No hints left' if @used_hints == @difficulty_hash[@difficulty.to_sym][:hints]
+
+      @used_hints += 1
+      rand_position = rand(0..3)
+      rand_position = rand(0..3) while @hints != rand_position
+      @secret_code.to_s.chars[rand_position]
+    end
+
+    private
 
     def get_result_from_input(user_code, secret_copy)
       result_string = ''
@@ -35,14 +49,6 @@ module CodeBreaker
         secret_copy[secret_copy.find_index(digit)] = 0
       end
       result_string
-    end
-
-    def receive_hint
-      return 'No hints left' if @used_hints == @difficulty_hash[@difficulty.to_sym][:hints]
-
-      @used_hints += 1
-      rand_position = rand(0..3)
-      @secret_code.to_s.chars[rand_position]
     end
   end
 end
