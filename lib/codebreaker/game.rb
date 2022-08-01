@@ -1,4 +1,6 @@
 require_relative 'validator'
+require '././lib/codebreaker/errors/no_attempts_left_error'
+require '././lib/codebreaker/errors/no_hints_left_error'
 
 module CodeBreaker
   class Game
@@ -18,7 +20,7 @@ module CodeBreaker
     end
 
     def guess(user_code)
-      return 'No attempts left' if @used_attempts == @difficulty_hash[@difficulty.to_sym][:attempts]
+      raise CodeBreaker::NoAttemptsLeftError if @used_attempts == @difficulty_hash[@difficulty.to_sym][:attempts]
       return '' if user_code.nil?
 
       CodeBreaker::Validator.validates_input? user_code
@@ -30,7 +32,7 @@ module CodeBreaker
     end
 
     def receive_hint
-      return 'No hints left' if @used_hints == @difficulty_hash[@difficulty.to_sym][:hints]
+      raise CodeBreaker::NoHintsLeftError if @used_hints == @difficulty_hash[@difficulty.to_sym][:hints]
 
       @used_hints += 1
       rand_position = rand(0..3)
