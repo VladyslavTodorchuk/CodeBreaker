@@ -53,6 +53,7 @@ jobs:
   rspec:
     executor: default
     steps:
+      - defaults
       - run_rspec
 
 workflows:
