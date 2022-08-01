@@ -1,4 +1,3 @@
-
 RSpec.describe CodeBreaker::Game do
   let(:game) do
     described_class.new(name: 'Vlad', difficulty: 'easy', secret_code: 3456)
@@ -22,14 +21,13 @@ RSpec.describe CodeBreaker::Game do
     end
 
     it 'NoAttemptsError check' do
-      expect { 16.times {game.guess(1234)} }.to raise_error(CodeBreaker::NoAttemptsLeftError)
+      expect { 16.times { game.guess(1234) } }.to raise_error(CodeBreaker::NoAttemptsLeftError)
     end
-
   end
 
   describe '#receive_hint' do
     it 'NoHintsLeftError check' do
-      expect { 3.times {game.receive_hint} }.to raise_error(CodeBreaker::NoHintsLeftError)
+      expect { 3.times { game.receive_hint } }.to raise_error(CodeBreaker::NoHintsLeftError)
     end
   end
 end

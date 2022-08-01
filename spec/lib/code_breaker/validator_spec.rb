@@ -1,4 +1,3 @@
-
 RSpec.describe CodeBreaker::Validator do
   describe '#validates_name?' do
     it 'validates name' do
