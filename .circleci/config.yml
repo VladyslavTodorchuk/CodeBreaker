@@ -50,10 +50,8 @@ jobs:
       - defaults
       - run_rubocop
       - run_fasterer
-  rpsec:
-    executor: default
+  rspec:
     steps:
-      - dafaults
       - run_rspec
 
 workflows:
@@ -61,4 +59,4 @@ workflows:
   build:
     jobs:
       - lintering
-      - rpsec
+      - rspec
