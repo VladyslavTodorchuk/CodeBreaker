@@ -7,8 +7,7 @@ module CodeBreaker
     attr_reader :name, :difficulty, :secret_code, :difficulty_hash, :used_attempts, :used_hints, :hints
 
     def initialize(params)
-      CodeBreaker::Validator.validates_name? params[:name]
-      @name = params[:name]
+      @name = params[:name] if CodeBreaker::Validator.validates_name? params[:name]
       @difficulty = params[:difficulty].downcase
       @used_attempts = 0
       @used_hints = 0
@@ -21,11 +20,11 @@ module CodeBreaker
 
     def guess(user_code)
       raise CodeBreaker::NoAttemptsLeftError if @used_attempts == @difficulty_hash[@difficulty.to_sym][:attempts]
-      return '' if user_code.nil?
+      raise TypeError, 'Input can not be nil' if user_code.nil?
 
       CodeBreaker::Validator.validates_input? user_code
-      codes = code_to_array(user_code, @secret_code)
-      result_string = get_result_from_input(codes[:input], codes[:secret])
+      user_code = user_code.to_s.chars.map(&:to_i)
+      result_string = get_result_from_input(user_code, @secret_code.clone)
       @used_attempts += 1
       result_string.chars.sort.join
     end
@@ -33,10 +32,10 @@ module CodeBreaker
     def receive_hint
       raise CodeBreaker::NoHintsLeftError if @used_hints == @difficulty_hash[@difficulty.to_sym][:hints]
 
-      @used_hints += 1
       @hints = rand(0..3)
       rand_position = rand(0..3) while @hints != rand_position
-      @secret_code.to_s.chars[rand_position]
+      @used_hints += 1
+      @secret_code.to_s.chars[rand_position].to_i
     end
 
     private
@@ -50,12 +49,6 @@ module CodeBreaker
         secret_copy[secret_copy.find_index(digit)] = 0
       end
       result_string
-    end
-
-    def code_to_array(input_code, secret_code)
-      input_code = input_code.to_s.chars.map(&:to_i)
-      secret_code = secret_code.to_s.chars.map(&:to_i)
-      { input: input_code, secret: secret_code }
     end
   end
 end

@@ -1,6 +1,6 @@
 RSpec.describe CodeBreaker::Game do
   let(:game) do
-    described_class.new(name: 'Vlad', difficulty: 'easy', secret_code: 3456)
+    described_class.new(name: 'Vlad', difficulty: 'easy', secret_code: [3, 4, 5, 6])
   end
 
   describe '#guess' do
@@ -17,7 +17,7 @@ RSpec.describe CodeBreaker::Game do
     end
 
     it 'nil input' do
-      expect(game.guess(nil)).to eq('')
+      expect { game.guess(nil) }.to raise_error(TypeError)
     end
 
     it 'NoAttemptsError check' do
