@@ -54,7 +54,7 @@ commands:
 jobs:
   lintering:
     executor: default
-    parallelism: 2
+    parallelism: 4
     steps:
       - defaults
       - run_rubocop
