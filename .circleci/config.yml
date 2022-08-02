@@ -54,7 +54,7 @@ commands:
 jobs:
   lintering:
     executor: default
-    parallelism: 4
+    parallelism: 2
     steps:
       - defaults
       - run_rubocop
@@ -70,4 +70,6 @@ workflows:
   build:
     jobs:
       - lintering
-      - rspec
+      - rspec:
+          requires:
+              - lintering
