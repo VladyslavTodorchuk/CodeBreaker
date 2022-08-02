@@ -35,8 +35,7 @@ commands:
     description: command to start fasterer
     steps:
       - attach_workspace:
-          at: ~/
-      - defaults
+          at: ~/codebreaker
       - run:
           name: fasterer
           command: bundle exec fasterer
