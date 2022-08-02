@@ -32,8 +32,8 @@ module CodeBreaker
     def receive_hint
       raise CodeBreaker::NoHintsLeftError if @used_hints == @difficulty_hash[@difficulty.to_sym][:hints]
 
-      @hints = rand(0..3)
       rand_position = rand(0..3) while @hints != rand_position
+      @hints = rand_position
       @used_hints += 1
       @secret_code.to_s.chars[rand_position].to_i
     end
