@@ -36,6 +36,7 @@ commands:
     steps:
       - attach_workspace:
           at: ~/
+      - configure_bundler
       - run:
           name: fasterer
           command: bundle exec fasterer
