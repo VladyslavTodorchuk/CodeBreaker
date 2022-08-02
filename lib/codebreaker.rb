@@ -9,9 +9,9 @@ module CodeBreaker
   class CodeBreakerGame
     attr_reader :game
 
-    def start_game(name, difficulty)
-      secret_code = CodeBreaker::CodeMaker.generate_code
-      @game = CodeBreaker::Game.new(name:, secret_code:, difficulty:)
+    def initialize(user_name, difficulty)
+      generated_code = CodeBreaker::CodeMaker.generate_code
+      @game = CodeBreaker::Game.new(name: user_name, secret_code: generated_code, difficulty:)
     end
 
     def action(command, input = nil)
@@ -21,7 +21,7 @@ module CodeBreaker
       when :hint
         @game.receive_hint
       else
-        raise NoMethodError, "No such command #{command}"
+        raise CodeBreaker::NoCommandError, "No such command #{command}"
       end
     end
   end

@@ -1,6 +1,7 @@
 require_relative 'validator'
 require '././lib/codebreaker/errors/no_attempts_left_error'
 require '././lib/codebreaker/errors/no_hints_left_error'
+require '././lib/codebreaker/errors/no_command_error'
 
 module CodeBreaker
   class Game
@@ -20,7 +21,7 @@ module CodeBreaker
 
     def guess(user_code)
       raise CodeBreaker::NoAttemptsLeftError if @used_attempts == @difficulty_hash[@difficulty.to_sym][:attempts]
-      raise TypeError, 'Input can not be nil' if user_code.nil?
+      raise CodeBreaker::ValidatorError, 'Input can not be nil' if user_code.nil?
 
       CodeBreaker::Validator.validates_input? user_code
       user_code = user_code.to_s.chars.map(&:to_i)

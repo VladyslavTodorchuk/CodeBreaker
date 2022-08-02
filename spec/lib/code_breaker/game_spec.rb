@@ -17,7 +17,7 @@ RSpec.describe CodeBreaker::Game do
     end
 
     it 'nil input' do
-      expect { game.guess(nil) }.to raise_error(TypeError)
+      expect { game.guess(nil) }.to raise_error(CodeBreaker::ValidatorError)
     end
 
     it 'NoAttemptsError check' do
