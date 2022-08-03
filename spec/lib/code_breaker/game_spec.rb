@@ -4,29 +4,29 @@ RSpec.describe CodeBreaker::Game do
   end
 
   describe '#guess' do
-    it 'should return ++++ win' do
+    it 'returns ++++ win' do
       expect(game.guess(3456)).to eq('++++')
     end
 
-    it 'should return ---- digits not in the same position' do
+    it 'returns ---- digits not in the same position' do
       expect(game.guess(6543)).to eq('----')
     end
 
-    it 'should return " " no similarity' do
+    it 'returns " " no similarity' do
       expect(game.guess(1111)).to eq('')
     end
 
-    it 'should raise ValidationError nil input' do
+    it 'raises ValidationError nil input' do
       expect { game.guess(nil) }.to raise_error(CodeBreaker::ValidatorError)
     end
 
-    it 'should raise NoAttemptsError' do
+    it 'raises NoAttemptsError' do
       expect { 16.times { game.guess(1234) } }.to raise_error(CodeBreaker::NoAttemptsLeftError)
     end
   end
 
   describe '#receive_hint' do
-    it 'should raise NoHintsLeftError' do
+    it 'raises NoHintsLeftError' do
       expect { 3.times { game.receive_hint } }.to raise_error(CodeBreaker::NoHintsLeftError)
     end
   end
