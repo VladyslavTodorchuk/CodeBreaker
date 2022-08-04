@@ -1,4 +1,4 @@
-require '././lib/codebreaker/errors/validator_error'
+require_relative './errors/validator_error'
 
 module CodeBreaker
   class Validator

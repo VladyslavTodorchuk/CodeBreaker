@@ -1,7 +1,7 @@
 require_relative 'validator'
-require '././lib/codebreaker/errors/no_attempts_left_error'
-require '././lib/codebreaker/errors/no_hints_left_error'
-require '././lib/codebreaker/errors/no_command_error'
+require_relative './errors/no_attempts_left_error'
+require_relative './errors/no_hints_left_error'
+require_relative './errors/no_command_error'
 
 module CodeBreaker
   class Game
@@ -25,6 +25,7 @@ module CodeBreaker
       CodeBreaker::Validator.validates_input? user_code
       user_code = user_code.to_s.chars.map(&:to_i)
       result_string = get_result_from_input(user_code, @secret_code.clone)
+
       @used_attempts += 1
       result_string.chars.sort.join
     end
