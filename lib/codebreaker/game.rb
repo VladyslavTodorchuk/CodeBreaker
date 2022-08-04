@@ -33,10 +33,11 @@ module CodeBreaker
     def receive_hint
       raise CodeBreaker::NoHintsLeftError if @used_hints == @difficulty_hash[@difficulty.to_sym][:hints]
 
-      rand_position = rand(0..3) while @hints != rand_position
+      rand_position = 0
+      rand_position = rand(0..3) until rand_position != @hints
       @hints = rand_position
       @used_hints += 1
-      @secret_code.to_s.chars[rand_position].to_i
+      @secret_code[rand_position]
     end
 
     private
