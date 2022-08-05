@@ -49,6 +49,7 @@ module CodeBreaker
 
         result_string << (user_code.find_index(digit) == secret_copy.find_index(digit) ? '+' : '-')
         secret_copy[secret_copy.find_index(digit)] = 0
+        user_code[user_code.find_index(digit)] = 0
       end
       result_string
     end
