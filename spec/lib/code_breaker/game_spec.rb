@@ -4,7 +4,7 @@ RSpec.describe CodeBreaker::Game do
   end
 
   describe '#guess' do
-    it 'returns ++++ win' do
+    it 'returns ++++ win 1' do
       expect(game.guess(3456)).to eq('++++')
     end
 
