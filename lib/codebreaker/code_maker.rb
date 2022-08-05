@@ -1,8 +1,12 @@
+require_relative 'constants'
+
 module CodeBreaker
   class CodeMaker
     def self.generate_code
       code = []
-      4.times { code << rand(1..6) }
+      CodeBreaker::Constants::MAX_LENGTH_CODE.times do
+        code << rand(CodeBreaker::Constants::MIN_DIGIT..CodeBreaker::Constants::MAX_DIGIT)
+      end
       code
     end
   end
