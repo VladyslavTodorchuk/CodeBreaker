@@ -1,11 +1,11 @@
 RSpec.describe CodeBreaker::Game do
   let(:game) do
-    described_class.new(name: 'Vlad', difficulty: 'easy', secret_code: [1, 3, 3, 3])
+    described_class.new(name: 'Vlad', difficulty: 'easy', secret_code: [3, 4, 5, 6])
   end
 
   describe '#guess' do
     it 'returns ++++ win 1' do
-      expect(game.guess(1333)).to eq('++++')
+      expect(game.guess(3456)).to eq('++++')
     end
 
     it 'returns ---- digits not in the same position' do
