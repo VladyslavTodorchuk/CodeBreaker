@@ -17,17 +17,17 @@ RSpec.describe CodeBreaker::Game do
     end
 
     it 'raises ValidationError nil input' do
-      expect { game.guess(nil) }.to raise_error(CodeBreaker::ValidatorError)
+      expect { game.guess(nil) }.to raise_error('Input is nil')
     end
 
     it 'raises NoAttemptsError' do
-      expect { 16.times { game.guess(1234) } }.to raise_error(CodeBreaker::NoAttemptsLeftError)
+      expect { 16.times { game.guess(1234) } }.to raise_error('You have no attempts left')
     end
   end
 
   describe '#receive_hint' do
     it 'raises NoHintsLeftError' do
-      expect { 3.times { game.receive_hint } }.to raise_error(CodeBreaker::NoHintsLeftError)
+      expect { 3.times { game.receive_hint } }.to raise_error('You have no hints left')
     end
   end
 end

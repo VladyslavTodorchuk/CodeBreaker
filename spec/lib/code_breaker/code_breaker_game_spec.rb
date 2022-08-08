@@ -1,13 +1,23 @@
 RSpec.describe CodeBreaker::CodeBreakerGame do
   describe '#start_game' do
+    let(:min_name_length) do
+      CodeBreaker::Constants::MIN_NAME_LENGTH
+    end
+
+    let(:max_name_length) do
+      CodeBreaker::Constants::MAX_NAME_LENGTH
+    end
+
     it 'raises ValidatorError (too short)' do
-      expect { described_class.new('Vl', 'easy') }.to raise_error(CodeBreaker::ValidatorError)
+      expect do
+        described_class.new('Vl', 'easy')
+      end.to raise_error('Name length must be between 3 and 20 chars')
     end
 
     it 'raises ValidatorError (too long)' do
       expect do
         described_class.new('Va' * CodeBreaker::Constants::MAX_NAME_LENGTH, 'easy')
-      end.to raise_error(CodeBreaker::ValidatorError)
+      end.to raise_error('Name length must be between 3 and 20 chars')
     end
   end
 
@@ -17,7 +27,7 @@ RSpec.describe CodeBreaker::CodeBreakerGame do
     end
 
     it 'raises NoMethodError wrong command' do
-      expect { game.action(:wrong_command) }.to raise_error(CodeBreaker::NoCommandError)
+      expect { game.action(:wrong_command) }.to raise_error('You entered wrong command')
     end
 
     it 'returns an Integer hint method' do
@@ -28,8 +38,8 @@ RSpec.describe CodeBreaker::CodeBreakerGame do
       expect(game.action(:guess, 1234)).to be_instance_of(String)
     end
 
-    it 'raises TypeError input is nil case for guess method' do
-      expect { game.action(:guess) }.to raise_error(CodeBreaker::ValidatorError)
+    it 'raises ValidatorError input is nil case for guess method' do
+      expect { game.action(:guess) }.to raise_error('Input is nil')
     end
   end
 end

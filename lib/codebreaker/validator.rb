@@ -11,8 +11,7 @@ module CodeBreaker
       max_length = CodeBreaker::Constants::MAX_NAME_LENGTH
       min_length = CodeBreaker::Constants::MIN_NAME_LENGTH
       unless (min_length..max_length).cover?(name.length)
-        raise ValidatorError,
-              "Name length less then #{min_length} high then #{max_length}"
+        raise ValidatorError, "Name length must be between #{min_length} and #{max_length} chars"
       end
 
       true
