@@ -6,7 +6,8 @@ require_relative './constants'
 
 module CodeBreaker
   class Game
-    attr_reader :name, :difficulty, :secret_code, :used_attempts, :used_hints, :hints
+    attr_reader :name, :difficulty, :secret_code, :hints
+    attr_accessor :used_attempts, :used_hints, :total_hints, :total_attempts
 
     def initialize(params)
       @name = params[:name] if CodeBreaker::Validator.validates_name? params[:name]
@@ -14,12 +15,13 @@ module CodeBreaker
       @used_attempts = 0
       @used_hints = 0
       @secret_code = params[:secret_code]
-      @hints = 0
+      @hints = []
+      @total_attempts = CodeBreaker::Constants::DIFFICULTY_HASH[@difficulty.to_sym][:attempts]
+      @total_hints = CodeBreaker::Constants::DIFFICULTY_HASH[@difficulty.to_sym][:hints]
     end
 
     def guess(user_code)
-      total_attempts = CodeBreaker::Constants::DIFFICULTY_HASH[@difficulty.to_sym][:attempts]
-      raise CodeBreaker::NoAttemptsLeftError if @used_attempts == total_attempts
+      raise CodeBreaker::NoAttemptsLeftError if @used_attempts == @total_attempts
 
       CodeBreaker::Validator.validates_input? user_code
       user_code = user_code.to_s.chars.map(&:to_i)
@@ -30,12 +32,11 @@ module CodeBreaker
     end
 
     def receive_hint
-      total_hints = CodeBreaker::Constants::DIFFICULTY_HASH[@difficulty.to_sym][:hints]
-      raise CodeBreaker::NoHintsLeftError if @used_hints == total_hints
+      raise CodeBreaker::NoHintsLeftError if @used_hints == @total_hints
 
       rand_position = 0
-      rand_position = rand(0..3) until rand_position != @hints
-      @hints = rand_position
+      rand_position = rand(0..3) while @hints.include?(rand_position)
+      @hints << rand_position
       @used_hints += 1
       @secret_code[rand_position]
     end
