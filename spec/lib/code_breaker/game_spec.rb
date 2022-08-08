@@ -1,6 +1,6 @@
 RSpec.shared_examples 'input result' do
   it 'return result' do
-    expect(CodeBreaker::Game.new(name: 'Vlad', difficulty: 'easy', secret_code: secret_code).guess(code)).to eq(result)
+    expect(CodeBreaker::Game.new(name: 'Vlad', difficulty: 'easy', secret_code:).guess(code)).to eq(result)
   end
 end
 
@@ -92,7 +92,7 @@ RSpec.describe CodeBreaker::Game do
         tmp = []
         game = described_class.new name: 'Vlad', difficulty: 'hell', secret_code: CodeBreaker::CodeMaker.generate_code
         game.total_hints = 4
-        4.times {tmp << game.receive_hint }
+        4.times { tmp << game.receive_hint }
         expect(tmp).to match_array(game.secret_code)
       end
     end
