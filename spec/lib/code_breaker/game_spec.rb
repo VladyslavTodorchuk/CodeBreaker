@@ -1,9 +1,7 @@
-
 RSpec.describe CodeBreaker::Game do
-
   RSpec.shared_examples 'input result' do
     it 'return result' do
-      expect(CodeBreaker::Game.new(name: 'Vlad', difficulty: 'easy', secret_code: secret).guess(code)).to eq(result)
+      expect(described_class.new(name: 'Vlad', difficulty: 'easy', secret_code: secret).guess(code)).to eq(result)
     end
   end
 
@@ -75,7 +73,7 @@ RSpec.describe CodeBreaker::Game do
     context 'when input is nil' do
       it 'raise ValidatorError' do
         expect do
-          CodeBreaker::Game.new(name: 'Vlad', difficulty: 'easy').guess(nil)
+          described_class.new(name: 'Vlad', difficulty: 'easy').guess(nil)
         end.to raise_error(CodeBreaker::ValidatorError, 'Input is nil')
       end
     end

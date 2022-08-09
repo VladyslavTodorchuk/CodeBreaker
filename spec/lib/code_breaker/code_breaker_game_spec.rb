@@ -9,16 +9,16 @@ RSpec.describe CodeBreaker::CodeBreakerGame do
 
   RSpec.shared_examples 'action method raise error' do
     it 'raise error' do
-      expect{ code }.to raise_error(error)
+      expect { code }.to raise_error(error)
     end
   end
 
   describe '#start_game' do
     context 'when call generated code' do
-      before {
+      before do
         allow(CodeBreaker::CodeMaker).to receive(:generate_code)
         described_class.new('Vlad', 'easy')
-      }
+      end
 
       it 'generate code' do
         expect(CodeBreaker::CodeMaker).to have_received(:generate_code)

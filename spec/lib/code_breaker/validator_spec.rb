@@ -1,22 +1,22 @@
-
 RSpec.describe CodeBreaker::Validator do
-
   RSpec.shared_examples 'not validates name' do
     it 'raise ValidatorError' do
-      expect { CodeBreaker::Validator.validates_name?(name) }.to raise_error(CodeBreaker::ValidatorError, error_massage)
+      expect { described_class.validates_name?(name) }.to raise_error(CodeBreaker::ValidatorError, error_massage)
     end
   end
 
   RSpec.shared_examples 'not validates input' do
     it 'raise ValidatorError' do
-      expect { CodeBreaker::Validator.validates_input?(input) }.to raise_error(CodeBreaker::ValidatorError, error_massage)
+      expect do
+        described_class.validates_input?(input)
+      end.to raise_error(CodeBreaker::ValidatorError, error_massage)
     end
   end
 
   describe '#validates_name?' do
     context 'when name validates' do
       it 'name validates' do
-        expect(CodeBreaker::Validator.validates_name?('Vlad')).to eq(true)
+        expect(described_class.validates_name?('Vlad')).to eq(true)
       end
     end
 
@@ -45,7 +45,7 @@ RSpec.describe CodeBreaker::Validator do
   describe '#validates_input?' do
     context 'when input validates' do
       it 'validates' do
-        expect(CodeBreaker::Validator.validates_input?(1234)).to eq(true)
+        expect(described_class.validates_input?(1234)).to eq(true)
       end
     end
 
