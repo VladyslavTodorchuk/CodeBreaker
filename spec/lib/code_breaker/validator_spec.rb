@@ -5,7 +5,7 @@ RSpec.shared_examples 'not validates name' do
 end
 
 RSpec.shared_examples 'validates name' do
-  it 'validates' do
+  it 'name validates' do
     expect(CodeBreaker::Validator.validates_name?(name)).to eq(result)
   end
 end
