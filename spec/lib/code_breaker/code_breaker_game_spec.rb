@@ -1,5 +1,5 @@
 RSpec.describe CodeBreaker::CodeBreakerGame do
-  let(:game) { described_class.new('Vlad', 'easy') }
+  let(:game_obj) { described_class.new('Vlad', 'easy') }
 
   RSpec.shared_examples 'action method' do
     it 'return action method result' do
@@ -27,32 +27,48 @@ RSpec.describe CodeBreaker::CodeBreakerGame do
   end
 
   describe '#action' do
-    context 'when call CodeBreakerGame action with guess and input params' do
-      let(:code) { game.action(:guess, 1234) }
-      let(:result) { String }
+    let(:result) { described_class.new('Vlad', 'easy') }
 
-      include_examples 'action method'
+    context 'when call guess with 1234 argument' do
+      let(:game) { instance_double('CodeBreaker::Game') }
+
+      before do
+        allow(CodeBreaker::Game).to receive(:new) { game }
+        allow(game).to receive(:guess).with(1234)
+      end
+
+      it do
+        result.action(:guess, 1234)
+        expect(game).to have_received(:guess).with(1234)
+      end
     end
 
-    context 'when call CodeBreakerGame action with guess and input nil params' do
-      let(:code) { game.action(:guess, nil) }
-      let(:error) { 'Input is nil' }
+    context 'when call guess with nil argument' do
+      let(:game) { instance_double('CodeBreaker::Game') }
 
-      include_examples 'action method raise error'
+      before do
+        allow(CodeBreaker::Game).to receive(:new) { game }
+        allow(game).to receive(:guess)
+      end
+
+      it do
+        result.action(:guess)
+        expect(game).to have_received(:guess)
+      end
     end
 
-    context 'when call CodeBreakerGame action with undefined action' do
-      let(:code) { game.action(:undefined) }
-      let(:error) { 'You entered wrong command' }
+    context 'when call hint' do
+      let(:game) { instance_double('CodeBreaker::Game') }
 
-      include_examples 'action method raise error'
-    end
+      before do
+        allow(CodeBreaker::Game).to receive(:new) { game }
+        allow(game).to receive(:receive_hint)
+      end
 
-    context 'when call CodeBreakerGame action with hint param' do
-      let(:code) { game.action(:hint) }
-      let(:result) { Integer }
-
-      include_examples 'action method'
+      it do
+        result.action(:hint)
+        expect(game).to have_received(:receive_hint)
+      end
     end
   end
 end
