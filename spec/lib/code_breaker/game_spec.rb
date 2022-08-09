@@ -1,18 +1,12 @@
-RSpec.shared_examples 'input result' do
-  it 'return result' do
-    expect(CodeBreaker::Game.new(name: 'Vlad', difficulty: 'easy', secret_code: secret).guess(code)).to eq(result)
-  end
-end
-
-RSpec.shared_examples 'not validates input' do
-  it 'raise ValidatorError' do
-    expect do
-      CodeBreaker::Game.new(name: 'Vlad', difficulty: 'easy').guess(code)
-    end.to raise_error(CodeBreaker::ValidatorError, error_message)
-  end
-end
 
 RSpec.describe CodeBreaker::Game do
+
+  RSpec.shared_examples 'input result' do
+    it 'return result' do
+      expect(CodeBreaker::Game.new(name: 'Vlad', difficulty: 'easy', secret_code: secret).guess(code)).to eq(result)
+    end
+  end
+
   describe '#guess' do
     context 'when input is right' do
       let(:secret) { [3, 4, 5, 6] }
@@ -79,10 +73,11 @@ RSpec.describe CodeBreaker::Game do
     end
 
     context 'when input is nil' do
-      let(:error_message) { 'Input is nil' }
-      let(:code) { nil }
-
-      include_examples 'not validates input'
+      it 'raise ValidatorError' do
+        expect do
+          CodeBreaker::Game.new(name: 'Vlad', difficulty: 'easy').guess(nil)
+        end.to raise_error(CodeBreaker::ValidatorError, 'Input is nil')
+      end
     end
   end
 
