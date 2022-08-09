@@ -1,6 +1,6 @@
 RSpec.shared_examples 'input result' do
   it 'return result' do
-    expect(CodeBreaker::Game.new(name: 'Vlad', difficulty: 'easy', secret_code:).guess(code)).to eq(result)
+    expect(CodeBreaker::Game.new(name: 'Vlad', difficulty: 'easy', secret_code: secret).guess(code)).to eq(result)
   end
 end
 
@@ -15,7 +15,7 @@ end
 RSpec.describe CodeBreaker::Game do
   describe '#guess' do
     context 'when input is right' do
-      let(:secret_code) { [3, 4, 5, 6] }
+      let(:secret) { [3, 4, 5, 6] }
       let(:result) { '++++' }
       let(:code) { 3456 }
 
@@ -23,7 +23,7 @@ RSpec.describe CodeBreaker::Game do
     end
 
     context 'when input digit position is not right' do
-      let(:secret_code) { [3, 4, 5, 6] }
+      let(:secret) { [3, 4, 5, 6] }
       let(:result) { '----' }
       let(:code) { 6543 }
 
@@ -31,7 +31,7 @@ RSpec.describe CodeBreaker::Game do
     end
 
     context 'when input not right' do
-      let(:secret_code) { [3, 4, 5, 6] }
+      let(:secret) { [3, 4, 5, 6] }
       let(:result) { '' }
       let(:code) { 1111 }
 
@@ -39,7 +39,7 @@ RSpec.describe CodeBreaker::Game do
     end
 
     context 'when input is +-' do
-      let(:secret_code) { [1, 2, 3, 4] }
+      let(:secret) { [1, 2, 3, 4] }
       let(:result) { '+-' }
       let(:code) { 1356 }
 
@@ -47,7 +47,7 @@ RSpec.describe CodeBreaker::Game do
     end
 
     context 'when input is ++' do
-      let(:secret_code) { [3, 4, 5, 6] }
+      let(:secret) { [3, 4, 5, 6] }
       let(:result) { '++' }
       let(:code) { 1256 }
 
@@ -55,7 +55,7 @@ RSpec.describe CodeBreaker::Game do
     end
 
     context 'when input is --' do
-      let(:secret_code) { [3, 4, 5, 6] }
+      let(:secret) { [3, 4, 5, 6] }
       let(:result) { '--' }
       let(:code) { 1243 }
 
@@ -63,7 +63,7 @@ RSpec.describe CodeBreaker::Game do
     end
 
     context 'when input is ---' do
-      let(:secret_code) { [3, 4, 5, 6] }
+      let(:secret) { [3, 4, 5, 6] }
       let(:result) { '---' }
       let(:code) { 1643 }
 
@@ -71,7 +71,7 @@ RSpec.describe CodeBreaker::Game do
     end
 
     context 'when input is +++' do
-      let(:secret_code) { [3, 4, 5, 6] }
+      let(:secret) { [3, 4, 5, 6] }
       let(:result) { '+++' }
       let(:code) { 3451 }
 
@@ -92,7 +92,7 @@ RSpec.describe CodeBreaker::Game do
         tmp = []
         game = described_class.new name: 'Vlad', difficulty: 'hell', secret_code: CodeBreaker::CodeMaker.generate_code
         game.total_hints = 4
-        4.times { tmp << game.receive_hint }
+        game.total_hints.times { tmp << game.receive_hint }
         expect(tmp).to match_array(game.secret_code)
       end
     end
