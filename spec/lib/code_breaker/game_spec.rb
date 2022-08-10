@@ -1,10 +1,11 @@
 RSpec.describe CodeBreaker::Game do
-  let(:name) { 'Vlad' }
-  let(:difficulty) { 'hell' }
+  let(:params) { { name: 'Vlad', difficulty: 'easy' } }
+  let(:game) { described_class.new(params) }
 
   shared_examples 'input result' do
     it 'return result' do
-      expect(described_class.new(name: name, difficulty: difficulty, secret_code: secret).guess(code)).to eq(result)
+      expect(described_class.new(name: params[:name], difficulty: params[:difficulty],
+                                 secret_code: secret).guess(code)).to eq(result)
     end
   end
 
@@ -72,28 +73,12 @@ RSpec.describe CodeBreaker::Game do
 
       include_examples 'input result'
     end
-
-    context 'when input is nil' do
-      it 'raise ValidatorError' do
-        expect do
-          game.guess(nil)
-        end.to raise_error(CodeBreaker::ValidatorError, 'Input is nil')
-      end
-    end
-
-    context 'when difficulty is nil' do
-      it 'raise ValidatorError' do
-        expect do
-          described_class.new(name: name, difficulty: nil)
-        end.to raise_error(CodeBreaker::ValidatorError, 'Difficulty is nil')
-      end
-    end
   end
 
   describe '#receive_hint' do
-    let(:game) { described_class.new(name: name, difficulty: difficulty) }
     let(:game_with_code) do
-      described_class.new(name: name, difficulty: difficulty, secret_code: CodeBreaker::CodeMaker.generate_code)
+      described_class.new(name: params[:name], difficulty: params[:difficulty],
+                          secret_code: CodeBreaker::CodeMaker.generate_code)
     end
 
     context 'when hint is giving right digits' do
@@ -120,12 +105,28 @@ RSpec.describe CodeBreaker::Game do
         expect { game.receive_hint }.to raise_error(CodeBreaker::NoHintsLeftError, 'You have no hints left')
       end
     end
+
+    context 'when input is nil' do
+      it 'raise ValidatorError' do
+        expect do
+          game.guess(nil)
+        end.to raise_error(CodeBreaker::ValidatorError, 'Input is nil')
+      end
+    end
+
+    context 'when difficulty is nil' do
+      it 'raise ValidatorError' do
+        expect do
+          described_class.new(name: params[:name], difficulty: nil)
+        end.to raise_error(CodeBreaker::ValidatorError, 'Difficulty is nil')
+      end
+    end
   end
 
   describe 'error_hendling' do
     it 'raise ValidatorError' do
       expect  do
-        described_class.new(name: 'VLad', difficulty: 'wrong_difficulty')
+        described_class.new(name: params[:name], difficulty: 'wrong_difficulty')
       end.to raise_error(CodeBreaker::ValidatorError, 'There no such difficulty')
     end
   end
