@@ -1,13 +1,13 @@
 RSpec.describe CodeBreaker::CodeBreakerGame do
   let(:game_obj) { described_class.new('Vlad', 'easy') }
 
-  RSpec.shared_examples 'action method' do
+  shared_examples 'action method' do
     it 'return action method result' do
       expect(code).to be_a(result)
     end
   end
 
-  RSpec.shared_examples 'action method raise error' do
+  shared_examples 'action method raise error' do
     it 'raise error' do
       expect { code }.to raise_error(error)
     end

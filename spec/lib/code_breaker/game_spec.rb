@@ -1,7 +1,10 @@
 RSpec.describe CodeBreaker::Game do
-  RSpec.shared_examples 'input result' do
+  let(:name) { 'Vlad' }
+  let(:difficulty) { 'hell' }
+
+  shared_examples 'input result' do
     it 'return result' do
-      expect(described_class.new(name: 'Vlad', difficulty: 'easy', secret_code: secret).guess(code)).to eq(result)
+      expect(described_class.new(name: name, difficulty: difficulty, secret_code: secret).guess(code)).to eq(result)
     end
   end
 
@@ -71,22 +74,35 @@ RSpec.describe CodeBreaker::Game do
     end
 
     context 'when input is nil' do
+      let(:game) { described_class.new(name: name, difficulty: difficulty) }
+
       it 'raise ValidatorError' do
         expect do
-          described_class.new(name: 'Vlad', difficulty: 'easy').guess(nil)
+          game.guess(nil)
         end.to raise_error(CodeBreaker::ValidatorError, 'Input is nil')
+      end
+    end
+
+    context 'when difficulty is nil' do
+      it 'raise ValidatorError' do
+        expect do
+          described_class.new(name: name, difficulty: nil)
+        end.to raise_error(CodeBreaker::ValidatorError, 'Difficulty is nil')
       end
     end
   end
 
   describe '#receive_hint' do
+    let(:game_with_code) do
+      described_class.new(name: name, difficulty: difficulty, secret_code: CodeBreaker::CodeMaker.generate_code)
+    end
+
     context 'when hint is giving right digits' do
       it 'check secret code include received hint' do
         tmp = []
-        game = described_class.new name: 'Vlad', difficulty: 'hell', secret_code: CodeBreaker::CodeMaker.generate_code
-        game.total_hints = 4
-        game.total_hints.times { tmp << game.receive_hint }
-        expect(tmp).to match_array(game.secret_code)
+        game_with_code.total_hints = 4
+        game_with_code.total_hints.times { tmp << game_with_code.receive_hint }
+        expect(tmp).to match_array(game_with_code.secret_code)
       end
     end
   end
@@ -94,7 +110,6 @@ RSpec.describe CodeBreaker::Game do
   describe 'error handling' do
     context 'when no attempts left' do
       it 'raise NoAttemptsLeftError' do
-        game = described_class.new name: 'Vlad', difficulty: 'hell'
         game.total_attempts = 0
         expect { game.guess(123) }.to raise_error(CodeBreaker::NoAttemptsLeftError, 'You have no attempts left')
       end
@@ -102,10 +117,17 @@ RSpec.describe CodeBreaker::Game do
 
     context 'when no hints left' do
       it 'raise NoAttemptsLeftError' do
-        game = described_class.new name: 'Vlad', difficulty: 'hell'
         game.total_hints = 0
         expect { game.receive_hint }.to raise_error(CodeBreaker::NoHintsLeftError, 'You have no hints left')
       end
+    end
+  end
+
+  describe 'error_hendling' do
+    it 'raise ValidatorError' do
+      expect  do
+        described_class.new(name: 'VLad', difficulty: 'wrong_difficulty')
+      end.to raise_error(CodeBreaker::ValidatorError, 'There no such difficulty')
     end
   end
 end

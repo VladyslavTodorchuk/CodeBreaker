@@ -1,5 +1,7 @@
 require: rubocop-rspec
 
+Style/HashSyntax:
+  Enabled: false
 Style/FrozenStringLiteralComment:
   Enabled: false
 

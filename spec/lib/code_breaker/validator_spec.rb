@@ -1,22 +1,30 @@
 RSpec.describe CodeBreaker::Validator do
-  RSpec.shared_examples 'not validates name' do
+  shared_examples 'not validates name' do
     it 'raise ValidatorError' do
-      expect { described_class.validates_name?(name) }.to raise_error(CodeBreaker::ValidatorError, error_massage)
+      expect { described_class.validates_name(name) }.to raise_error(CodeBreaker::ValidatorError, error_massage)
     end
   end
 
-  RSpec.shared_examples 'not validates input' do
+  shared_examples 'not validates input' do
     it 'raise ValidatorError' do
       expect do
-        described_class.validates_input?(input)
+        described_class.validates_input(input)
       end.to raise_error(CodeBreaker::ValidatorError, error_massage)
     end
   end
 
-  describe '#validates_name?' do
+  shared_examples 'not validates difficulty' do
+    it 'raise ValidatorError' do
+      expect do
+        described_class.validates_difficulty(input)
+      end.to raise_error(CodeBreaker::ValidatorError, error_massage)
+    end
+  end
+
+  describe '#validates_name' do
     context 'when name validates' do
       it 'name validates' do
-        expect(described_class.validates_name?('Vlad')).to eq(true)
+        expect(described_class.validates_name('Vlad')).to eq(nil)
       end
     end
 
@@ -42,10 +50,10 @@ RSpec.describe CodeBreaker::Validator do
     end
   end
 
-  describe '#validates_input?' do
+  describe '#validates_input' do
     context 'when input validates' do
       it 'validates' do
-        expect(described_class.validates_input?(1234)).to eq(true)
+        expect(described_class.validates_input(1234)).to eq(nil)
       end
     end
 
@@ -75,6 +83,35 @@ RSpec.describe CodeBreaker::Validator do
       let(:error_massage) { 'Input is not instance of Integer' }
 
       include_examples 'not validates input'
+    end
+  end
+
+  describe '#validates_difficulty' do
+    context 'when difficulty validates' do
+      it 'validates' do
+        expect(described_class.validates_difficulty('easy')).to eq(nil)
+      end
+    end
+
+    context 'when difficulty not validates' do
+      let(:input) { 1234 }
+      let(:error_massage) { 'Difficulty is not instance of String' }
+
+      include_examples 'not validates difficulty'
+    end
+
+    context 'when difficulty not validates, wrong_difficulty' do
+      let(:input) { 'wrong_difficulty' }
+      let(:error_massage) { 'There no such difficulty' }
+
+      include_examples 'not validates difficulty'
+    end
+
+    context 'when difficulty not validates nil' do
+      let(:input) { nil }
+      let(:error_massage) { 'Difficulty is nil' }
+
+      include_examples 'not validates difficulty'
     end
   end
 end

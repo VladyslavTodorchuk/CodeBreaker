@@ -10,5 +10,7 @@ module CodeBreaker
 
     MAX_DIGIT = 6
     MIN_DIGIT = 1
+
+    DIGIT_THAT_BEEN_USED = 0
   end
 end

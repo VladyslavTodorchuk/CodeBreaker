@@ -10,38 +10,33 @@ module CodeBreaker
     attr_accessor :used_attempts, :used_hints, :total_hints, :total_attempts
 
     def initialize(params)
-      @name = params[:name] if CodeBreaker::Validator.validates_name? params[:name]
-      @difficulty = params[:difficulty].downcase
-      @used_attempts = 0
-      @used_hints = 0
+      @name = params[:name]
+      @difficulty = params[:difficulty] if CodeBreaker::Validator.validates_difficulty(params[:difficulty]).nil?
       @secret_code = params[:secret_code]
-      @hints = []
+      @clonned_secret = @secret_code.clone
       @total_attempts = CodeBreaker::Constants::DIFFICULTY_HASH[@difficulty.to_sym][:attempts]
       @total_hints = CodeBreaker::Constants::DIFFICULTY_HASH[@difficulty.to_sym][:hints]
+      @used_attempts, @used_hints = 0, 0
     end
 
     def guess(user_code)
       raise CodeBreaker::NoAttemptsLeftError if @used_attempts == @total_attempts
 
-      CodeBreaker::Validator.validates_input? user_code
+      CodeBreaker::Validator.validates_name(@name).nil?
+      CodeBreaker::Validator.validates_input user_code
       user_code = user_code.to_s.chars.map(&:to_i)
       result_string = get_result_from_input(user_code, @secret_code.clone)
 
       @used_attempts += 1
-      result_string.chars.sort.join
+      result_string
     end
 
     def receive_hint
       raise CodeBreaker::NoHintsLeftError if @used_hints == @total_hints
 
-      rand_position = 0
-      rand_position = rand(0..3) while @hints.include?(rand_position)
-      @hints << rand_position
       @used_hints += 1
-      @secret_code[rand_position]
+      @clonned_secret.shuffle!.pop
     end
-
-    private
 
     def get_result_from_input(user_code, secret_copy)
       result_string = ''
@@ -49,10 +44,10 @@ module CodeBreaker
         next unless secret_copy.include?(digit)
 
         result_string << (user_code.find_index(digit) == secret_copy.find_index(digit) ? '+' : '-')
-        secret_copy[secret_copy.find_index(digit)] = 0
-        user_code[user_code.find_index(digit)] = 0
+        secret_copy[secret_copy.find_index(digit)] = CodeBreaker::Constants::DIGIT_THAT_BEEN_USED
+        user_code[user_code.find_index(digit)] = CodeBreaker::Constants::DIGIT_THAT_BEEN_USED
       end
-      result_string
+      result_string.chars.sort.join
     end
   end
 end
