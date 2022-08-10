@@ -48,12 +48,23 @@ RSpec.describe CodeBreaker::CodeBreakerGame do
 
       before do
         allow(CodeBreaker::Game).to receive(:new) { game }
-        allow(game).to receive(:guess)
+        allow(game).to receive(:guess).and_raise(CodeBreaker::ValidatorError, 'Input is nil')
       end
 
       it do
-        result.action(:guess)
-        expect(game).to have_received(:guess)
+        expect{ result.action(:guess) }.to raise_error(CodeBreaker::ValidatorError, 'Input is nil')
+      end
+    end
+
+    context 'when call hint' do
+      let(:game) { instance_double('CodeBreaker::Game') }
+
+      before do
+        allow(CodeBreaker::Game).to receive(:new) { game }
+      end
+
+      it do
+        expect{ result.action(:wring_command) }.to raise_error(CodeBreaker::NoCommandError, 'You entered wrong command')
       end
     end
 
