@@ -52,11 +52,11 @@ RSpec.describe CodeBreaker::CodeBreakerGame do
       end
 
       it do
-        expect{ result.action(:guess) }.to raise_error(CodeBreaker::ValidatorError, 'Input is nil')
+        expect { result.action(:guess) }.to raise_error(CodeBreaker::ValidatorError, 'Input is nil')
       end
     end
 
-    context 'when call hint' do
+    context 'when call action with wrong command' do
       let(:game) { instance_double('CodeBreaker::Game') }
 
       before do
@@ -64,7 +64,9 @@ RSpec.describe CodeBreaker::CodeBreakerGame do
       end
 
       it do
-        expect{ result.action(:wring_command) }.to raise_error(CodeBreaker::NoCommandError, 'You entered wrong command')
+        expect do
+          result.action(:wring_command)
+        end.to raise_error(CodeBreaker::NoCommandError, 'You entered wrong command')
       end
     end
 
