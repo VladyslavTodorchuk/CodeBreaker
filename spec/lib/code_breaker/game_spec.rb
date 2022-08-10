@@ -74,8 +74,6 @@ RSpec.describe CodeBreaker::Game do
     end
 
     context 'when input is nil' do
-      let(:game) { described_class.new(name: name, difficulty: difficulty) }
-
       it 'raise ValidatorError' do
         expect do
           game.guess(nil)
@@ -93,6 +91,7 @@ RSpec.describe CodeBreaker::Game do
   end
 
   describe '#receive_hint' do
+    let(:game) { described_class.new(name: name, difficulty: difficulty) }
     let(:game_with_code) do
       described_class.new(name: name, difficulty: difficulty, secret_code: CodeBreaker::CodeMaker.generate_code)
     end
