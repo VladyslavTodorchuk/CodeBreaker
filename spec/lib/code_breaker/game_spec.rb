@@ -18,6 +18,14 @@ RSpec.describe CodeBreaker::Game do
       include_examples 'input result'
     end
 
+    context 'when input is right and all the same' do
+      let(:secret) { [3, 3, 3, 3] }
+      let(:result) { '++' }
+      let(:code) { 3236 }
+
+      include_examples 'input result'
+    end
+
     context 'when input digit position is not right' do
       let(:secret) { [3, 4, 5, 6] }
       let(:result) { '----' }

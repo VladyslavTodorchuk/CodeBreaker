@@ -39,15 +39,36 @@ module CodeBreaker
     end
 
     def get_result_from_input(user_code, secret_copy)
-      result_string = ''
-      user_code.each do |digit|
-        next unless secret_copy.include?(digit)
+      secret_copy_tmp = secret_copy.clone
+      user_copy_tmp = user_code.clone
 
-        result_string << (user_code.find_index(digit) == secret_copy.find_index(digit) ? '+' : '-')
-        secret_copy[secret_copy.find_index(digit)] = CodeBreaker::Constants::DIGIT_THAT_BEEN_USED
-        user_code[user_code.find_index(digit)] = CodeBreaker::Constants::DIGIT_THAT_BEEN_USED
+      result = count_pluses(user_code, user_copy_tmp, secret_copy_tmp, secret_copy)
+      result << count_minuses(user_copy_tmp, secret_copy_tmp)
+    end
+
+    def count_pluses(user_code, user_code_tmp, secret_copy_tmp, secret_copy)
+      result = ''
+      user_code.each.with_index do |number, index|
+        if number == secret_copy[index]
+          result << '+'
+          user_code_tmp.delete_at user_code_tmp.index(number)
+          secret_copy_tmp.delete_at secret_copy_tmp.index(number)
+        end
       end
-      result_string.chars.sort.join
+      result
+    end
+
+    def count_minuses(user_copy_tmp, secret_copy_tmp)
+      result = ''
+      user_copy_tmp.each.with_index do |number, index|
+        secret_copy_tmp.each.with_index do |sec_number, sec_index|
+          if sec_index != index && number == sec_number
+            result << '-'
+            secret_copy_tmp.delete_at secret_copy_tmp.index(sec_number)
+          end
+        end
+      end
+      result
     end
   end
 end
