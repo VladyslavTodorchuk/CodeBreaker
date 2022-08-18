@@ -1,5 +1,6 @@
-class CodeBreaker
-  def self.hi
-    puts "Hello world!"
-  end
-end
+require_relative 'codebreaker/game'
+require_relative 'codebreaker/code_maker'
+require_relative './codebreaker/errors/no_attempts_left_error'
+require_relative './codebreaker/errors/no_hints_left_error'
+require_relative './codebreaker/errors/validator_error'
+require_relative './codebreaker/code_breaker_game'
